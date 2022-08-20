@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qLE-f3-CY9">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOR-6W-rlh">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOR-6W-rlh" userLabel="calculateButton">
                                 <rect key="frame" x="117" y="760" width="180" height="50"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                                 <constraints>
@@ -36,11 +36,15 @@
                                     </attributedString>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="convertButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vxZ-1E-AYB"/>
+                                    <segue destination="m7U-MF-1P0" kind="show" id="FWK-Qg-efM"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rsj-Ae-0Up" userLabel="CurrciesLableTextFieldView">
                                 <rect key="frame" x="82" y="302.5" width="250" height="151"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="150" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YMt-Gl-yEq" userLabel="amountTextField">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type amount to convert..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YMt-Gl-yEq" userLabel="inputAmountTextField">
                                         <rect key="frame" x="0.0" y="91" width="250" height="60"/>
                                         <accessibility key="accessibilityConfiguration" identifier="textF" label="textF"/>
                                         <constraints>
@@ -49,7 +53,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="GBP" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3FX-i9-qPf" userLabel="rightTextField">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3FX-i9-qPf" userLabel="targetCurrencyRightTextField">
                                         <rect key="frame" x="173" y="0.0" width="77" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="77" id="0oe-xW-xF5"/>
@@ -58,7 +62,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myZ-C4-dSu">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="myZ-C4-dSu" userLabel="amountLabel">
                                         <rect key="frame" x="0.0" y="63" width="250" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="fIq-Bu-bKG"/>
@@ -67,7 +71,7 @@
                                         <color key="textColor" systemColor="systemRedColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="GBP" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fbh-OP-LcF" userLabel="leftTextField">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fbh-OP-LcF" userLabel="sourceCurrencyLeftTextField">
                                         <rect key="frame" x="0.0" y="0.0" width="77" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="C2y-W0-MuE"/>
@@ -111,10 +115,16 @@
                             <constraint firstItem="Rsj-Ae-0Up" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-70" id="oa5-zu-ze8"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="p1w-2h-F2b"/>
+                    <connections>
+                        <outlet property="inputAmountTextField" destination="YMt-Gl-yEq" id="pWP-jP-dLv"/>
+                        <outlet property="sourceCurrencyRightTextField" destination="fbh-OP-LcF" id="QWa-1d-Mfr"/>
+                        <outlet property="targetCurrencyRightTextField" destination="3FX-i9-qPf" id="IEC-cG-CIi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1181" y="33"/>
+            <point key="canvasLocation" x="-271.01449275362319" y="32.8125"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="g2H-N5-DxN">
@@ -128,7 +138,7 @@
                                 <rect key="frame" x="117" y="760" width="180" height="50"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="180" id="bdc-AB-ozg"/>
+                                    <constraint firstAttribute="width" constant="180" id="eG2-Ma-dc9"/>
                                     <constraint firstAttribute="height" constant="50" id="hHn-PU-akg"/>
                                 </constraints>
                                 <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
@@ -220,10 +230,11 @@
                             <constraint firstItem="hKi-if-odm" firstAttribute="centerY" secondItem="KzD-3z-RLF" secondAttribute="centerY" id="fqa-LJ-ef2"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="yHZ-AO-lzA"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kDr-CL-2d2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-241" y="33"/>
+            <point key="canvasLocation" x="668.11594202898561" y="32.8125"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="jg5-Nv-yuO">
@@ -287,7 +298,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wiG-Hr-MMx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="577" y="33"/>
+            <point key="canvasLocation" x="1486.9565217391305" y="32.8125"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="YkR-hJ-Fu8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qLE-f3-CY9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="7po-bN-0L3">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="x3P-Ov-GYr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i33-tc-bHF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1181.1594202898552" y="32.8125"/>
         </scene>
     </scenes>
     <resources>
