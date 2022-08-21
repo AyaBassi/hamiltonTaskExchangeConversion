@@ -50,7 +50,7 @@
                                             <constraint firstAttribute="height" constant="60" id="C4Y-gt-lPM"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3FX-i9-qPf" userLabel="targetCurrencyRightTextField">
                                         <rect key="frame" x="173" y="0.0" width="77" height="34"/>
@@ -192,7 +192,7 @@
                                         </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="28 sec left" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNi-Bk-BAX">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNi-Bk-BAX">
                                         <rect key="frame" x="0.0" y="159" width="250" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="QOh-yQ-hDx"/>

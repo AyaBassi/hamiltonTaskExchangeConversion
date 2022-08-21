@@ -86,6 +86,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        hideKeyboardWhenTappedAround()
+        
         sourceCurrencyPickerView.delegate = self
         sourceCurrencyPickerView.dataSource = self
         
@@ -141,8 +143,8 @@ class HomeViewController: UIViewController {
                 }
                 
                 if let targetCurrecy = self.targetCurrencyRightTextField.text ,
-                    let conRes = conversionResult {
-                    destinationVC.convertedAmount = "\(conRes) \(targetCurrecy)"
+                    let convertedResult = conversionResult {
+                    destinationVC.convertedAmount = "\(convertedResult) \(targetCurrecy)"
                 }
         }
     }
@@ -178,5 +180,18 @@ extension HomeViewController :  UIPickerViewDelegate , UIPickerViewDataSource{
     }
 }
 
+
+extension UIViewController {
+    
+    func hideKeyboardWhenTappedAround() {
+        let tapGesture = UITapGestureRecognizer(target: self,
+                         action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
+}
 
 
