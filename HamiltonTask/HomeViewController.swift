@@ -31,13 +31,17 @@ let API_KEY_FROM_XCHANGE_API = "5c950ea0cc082cf1fc601ac9"
  "conversion_result":84.51}
 */
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
     
     // MARK: - Properties
     struct ConversionInfo: Codable {
     let conversion_rate: Double
     let conversion_result: Double
     }
+    
+    var conversionRate : Double?
+    var conversionResult : Double?
+    
     
     let currencies = ["AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN","BAM","BBD","BDT","BGN","BHD","BIF","BMD","BND","BOB","BRL","BSD","BTN","BWP","BYN","BZD","CAD","CDF","CHF","CLP","CNY","COP","CRC","CUP","CVE","CZK","DJF","DKK","DOP","DZD","EGP","ERN","ETB","EUR","FJD","FKP","FOK","GBP","GEL","GGP","GHS","GIP","GMD","GNF","GTQ","GYD","HKD","HNL","HRK","HTG","HUF","IDR","ILS","IMP","INR","IQD","IRR","ISK","JEP","JMD","JOD","JPY","KES","KGS","KHR","KID","KMF","KRW","KWD","KYD","KZT","LAK","LBP","LKR","LRD","LSL","LYD","MAD","MDL","MGA","MKD","MMK","MNT","MOP","MRU","MUR","MVR","MWK","MXN","MYR","MZN","NAD","NGN","NIO","NOK","NPR","NZD","OMR","PAB","PEN","PGK","PHP","PKR","PLN","PYG","QAR","RON","RSD","RUB","RWF","SAR","SBD","SCR","SDG","SEK","SGD","SHP","SLE","SOS","SRD","SSP","STN","SYP","SZL","THB","TJS","TMT","TND","TOP","TRY","TTD","TVD","TWD","TZS","UAH","UGX","USD","UYU","UZS","VES","VND","VUV","WST","XAF","XCD","XDR","XOF","XPF","YER","ZAR","ZMW","ZWL","LYD","SSP","SYP","VES","YER","ZWL"]
     
@@ -52,11 +56,26 @@ class ViewController: UIViewController {
         guard let amount = inputAmountTextField.text else { return }
         guard let sourceCurrency = sourceCurrencyRightTextField.text else { return }
         guard let targetCurrency = targetCurrencyRightTextField.text else { return }
-        convert(amount: amount, sourceCur: sourceCurrency, targetCur: targetCurrency)
         
-        
-        
+        makeConversionApiCall(amount: amount, sourceCur: sourceCurrency, targetCur: targetCurrency) { data in
+            
+            // success
+            do {
+                let decodedConversionInfo = try JSONDecoder().decode(ConversionInfo.self, from: data)
+
+                //self.conversionRate = decodedConversionInfo.conversion_rate
+                self.conversionResult = decodedConversionInfo.conversion_result
+
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "goToCalculatedResultScreen", sender: self)
+                }
+
+            } catch { print(error) }
+        }
+    
     }
+    
+    
     
     var sourceCurrencyPickerView = UIPickerView()
     var targetCurrencyPickerview = UIPickerView()
@@ -79,13 +98,16 @@ class ViewController: UIViewController {
         sourceCurrencyPickerView.tag = 1
         targetCurrencyPickerview.tag = 2
         
-        sourceCurrencyRightTextField.text = currencies.first
-        targetCurrencyRightTextField.text = currencies.first
+        sourceCurrencyRightTextField.text = currencies[46]
+        targetCurrencyRightTextField.text = currencies[145]
+        
+        sourceCurrencyPickerView.selectRow(46, inComponent: 0, animated: false)
+        targetCurrencyPickerview.selectRow(145, inComponent: 0, animated: false)
     }
     
     //MARK: - API CALL
     
-    func convert(amount:String,sourceCur:String, targetCur:String){
+    func makeConversionApiCall(amount:String,sourceCur:String, targetCur:String, completionHandler: @escaping (_ data : Data)->Void){
         let semaphore = DispatchSemaphore (value: 0)
 
         let url = "https://v6.exchangerate-api.com/v6/\(API_KEY_FROM_XCHANGE_API)/pair/\(sourceCur)/\(targetCur)/\(amount)"
@@ -97,24 +119,37 @@ class ViewController: UIViewController {
             print(String(describing: error))
             return
           }
-            // success
-            do {
-                let decodedSentences = try JSONDecoder().decode(ConversionInfo.self, from: data)
-                
-                print(decodedSentences.conversion_rate)
-                print(decodedSentences.conversion_result)
-                
-            } catch { print(error) }
-            
-          semaphore.signal()
+
+        
+            completionHandler(data)
+            semaphore.signal()
         }
 
         task.resume()
         semaphore.wait()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToCalculatedResultScreen" {
+            
+            let destinationVC = segue.destination as! CalculatedResultViewController
+            
+        
+                if let amount = self.inputAmountTextField.text ,
+                   let sourceCurrency = self.sourceCurrencyRightTextField.text {
+                    destinationVC.amount = "\(amount) \(sourceCurrency)"
+                }
+                
+                if let targetCurrecy = self.targetCurrencyRightTextField.text ,
+                    let conRes = conversionResult {
+                    destinationVC.convertedAmount = "\(conRes) \(targetCurrecy)"
+                }
+        }
+    }
 }
 
-extension ViewController :  UIPickerViewDelegate , UIPickerViewDataSource{
+
+extension HomeViewController :  UIPickerViewDelegate , UIPickerViewDataSource{
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -125,7 +160,7 @@ extension ViewController :  UIPickerViewDelegate , UIPickerViewDataSource{
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return currencies[row]
+        return "\(row + 1). \(currencies[row])"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -133,13 +168,13 @@ extension ViewController :  UIPickerViewDelegate , UIPickerViewDataSource{
         switch pickerView.tag {
         case 1:
             sourceCurrencyRightTextField.text = currencies[row]
+            sourceCurrencyRightTextField.resignFirstResponder()
         case 2:
             targetCurrencyRightTextField.text = currencies[row]
+            targetCurrencyRightTextField.resignFirstResponder()
         default:
             break
         }
-        
-        sourceCurrencyRightTextField.resignFirstResponder()
     }
 }
 
