@@ -9,10 +9,10 @@ import UIKit
 import Foundation
 
 //api key from apilayer: cJnWcE3rqizyyeb9ObAJW8aZ4hupF3NX
-//"https://api.apilayer.com/exchangerates_data/convert?to=\(targetCur)&from=\(sourceCur)&amount=\(amount)"
+//http format "https://api.apilayer.com/exchangerates_data/convert?to=\(targetCur)&from=\(sourceCur)&amount=\(amount)"
 
 // api key from exchangerate-api: 5c950ea0cc082cf1fc601ac9
-//https://v6.exchangerate-api.com/v6/YOUR-API-KEY/pair/EUR/GBP/AMOUNT
+//http format: "https://v6.exchangerate-api.com/v6/YOUR-API-KEY/pair/EUR/GBP/AMOUNT"
 let API_KEY_FROM_XCHANGE_API = "5c950ea0cc082cf1fc601ac9"
 
 
@@ -42,7 +42,6 @@ class HomeViewController: UIViewController {
     var conversionRate : Double?
     var conversionResult : Double?
     
-    
     let currencies = ["AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN","BAM","BBD","BDT","BGN","BHD","BIF","BMD","BND","BOB","BRL","BSD","BTN","BWP","BYN","BZD","CAD","CDF","CHF","CLP","CNY","COP","CRC","CUP","CVE","CZK","DJF","DKK","DOP","DZD","EGP","ERN","ETB","EUR","FJD","FKP","FOK","GBP","GEL","GGP","GHS","GIP","GMD","GNF","GTQ","GYD","HKD","HNL","HRK","HTG","HUF","IDR","ILS","IMP","INR","IQD","IRR","ISK","JEP","JMD","JOD","JPY","KES","KGS","KHR","KID","KMF","KRW","KWD","KYD","KZT","LAK","LBP","LKR","LRD","LSL","LYD","MAD","MDL","MGA","MKD","MMK","MNT","MOP","MRU","MUR","MVR","MWK","MXN","MYR","MZN","NAD","NGN","NIO","NOK","NPR","NZD","OMR","PAB","PEN","PGK","PHP","PKR","PLN","PYG","QAR","RON","RSD","RUB","RWF","SAR","SBD","SCR","SDG","SEK","SGD","SHP","SLE","SOS","SRD","SSP","STN","SYP","SZL","THB","TJS","TMT","TND","TOP","TRY","TTD","TVD","TWD","TZS","UAH","UGX","USD","UYU","UZS","VES","VND","VUV","WST","XAF","XCD","XDR","XOF","XPF","YER","ZAR","ZMW","ZWL","LYD","SSP","SYP","VES","YER","ZWL"]
     
     @IBOutlet weak var sourceCurrencyRightTextField: UITextField!
@@ -51,32 +50,40 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var inputAmountTextField: UITextField!
     
+    // button will make an api call and get result regarding given amount and source currency to convertedAmount and also grab the conversion rate
     @IBAction func convertButton(_ sender: UIButton) {
         
-        guard let amount = inputAmountTextField.text else { return }
         guard let sourceCurrency = sourceCurrencyRightTextField.text else { return }
         guard let targetCurrency = targetCurrencyRightTextField.text else { return }
         
+        if !currencies.contains(sourceCurrency) || !currencies.contains(targetCurrency){
+            print("Please write the correct currency Code")
+            return
+        }
+        guard let amount = inputAmountTextField.text else { return }
+        
+        if inputAmountTextField.text == "" {
+            print("please add an amount!")
+            return
+        }
+        
         makeConversionApiCall(amount: amount, sourceCur: sourceCurrency, targetCur: targetCurrency) { data in
-            
             // success
             do {
                 let decodedConversionInfo = try JSONDecoder().decode(ConversionInfo.self, from: data)
 
-                //self.conversionRate = decodedConversionInfo.conversion_rate
+                self.conversionRate = decodedConversionInfo.conversion_rate
                 self.conversionResult = decodedConversionInfo.conversion_result
 
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "goToCalculatedResultScreen", sender: self)
+                    self.inputAmountTextField.text = ""
                 }
 
             } catch { print(error) }
         }
-    
     }
-    
-    
-    
+    // create two pickerViews one for source and one for target currency
     var sourceCurrencyPickerView = UIPickerView()
     var targetCurrencyPickerview = UIPickerView()
     
@@ -84,25 +91,45 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        
+        let imageViewText = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: 20, height: 20))
+        let imageText = UIImage(named: "angleBracket2")
+        imageViewText.image = imageText
+        sourceCurrencyRightTextField.rightView = imageViewText
+        sourceCurrencyRightTextField.rightViewMode = .always
+        
+        let imageViewText2 = UIImageView(frame: CGRect(x: 0, y: 0.0, width: 20, height: 20))
+        let imageText2 = UIImage(named: "angleBracket2")
+        imageViewText2.image = imageText2
+        
+        targetCurrencyRightTextField.leftView = imageViewText2
+        targetCurrencyRightTextField.leftViewMode = .always
+        
         
         hideKeyboardWhenTappedAround()
         
+        // set delegate and datasource of source currency pickerView
         sourceCurrencyPickerView.delegate = self
         sourceCurrencyPickerView.dataSource = self
         
+        // set delegate and datasource of target currency picker view
         targetCurrencyPickerview.delegate = self
         targetCurrencyPickerview.dataSource = self
         
+        // set the inputView of the textfields to the pickerviews
         sourceCurrencyRightTextField.inputView = sourceCurrencyPickerView
         targetCurrencyRightTextField.inputView = targetCurrencyPickerview
         
+        // need to give tag to pickerviews to that in delegate methods can differentiate between the two
         sourceCurrencyPickerView.tag = 1
         targetCurrencyPickerview.tag = 2
         
+        // Show preselected currencies for simplicity
         sourceCurrencyRightTextField.text = currencies[46]
         targetCurrencyRightTextField.text = currencies[145]
         
+        // preselect currency code to GBP and USD for simplicity
         sourceCurrencyPickerView.selectRow(46, inComponent: 0, animated: false)
         targetCurrencyPickerview.selectRow(145, inComponent: 0, animated: false)
     }
@@ -121,8 +148,6 @@ class HomeViewController: UIViewController {
             print(String(describing: error))
             return
           }
-
-        
             completionHandler(data)
             semaphore.signal()
         }
@@ -136,19 +161,27 @@ class HomeViewController: UIViewController {
             
             let destinationVC = segue.destination as! CalculatedResultViewController
             
-        
                 if let amount = self.inputAmountTextField.text ,
                    let sourceCurrency = self.sourceCurrencyRightTextField.text {
                     destinationVC.amount = "\(amount) \(sourceCurrency)"
                 }
                 
                 if let targetCurrecy = self.targetCurrencyRightTextField.text ,
-                    let convertedResult = conversionResult {
-                    destinationVC.convertedAmount = "\(convertedResult) \(targetCurrecy)"
+                   let convertedResult = conversionResult ,
+                    var conversionRate = self.conversionRate {
+                    
+                    // round up the amount to 2 decimal point
+                    let doubleConRes : Double = convertedResult
+                    let roundedConRes = round(doubleConRes * 100 ) / 100
+                    
+                    destinationVC.convertedAmount = "\(roundedConRes) \(targetCurrecy)"
+                    conversionRate = 1/conversionRate
+                    destinationVC.conversionRate = conversionRate
                 }
         }
     }
 }
+
 
 
 extension HomeViewController :  UIPickerViewDelegate , UIPickerViewDataSource{

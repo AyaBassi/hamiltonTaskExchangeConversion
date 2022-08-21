@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		63B9ACC128B1891D001379A7 /* CalculatedResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9ACC028B1891D001379A7 /* CalculatedResultViewController.swift */; };
+		63B9ACC328B2B494001379A7 /* ConvertedResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B9ACC228B2B494001379A7 /* ConvertedResultViewController.swift */; };
 		63F4492F28AC1E570093565E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4492E28AC1E570093565E /* AppDelegate.swift */; };
 		63F4493128AC1E570093565E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4493028AC1E570093565E /* SceneDelegate.swift */; };
 		63F4493328AC1E570093565E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F4493228AC1E570093565E /* HomeViewController.swift */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		63B9ACC028B1891D001379A7 /* CalculatedResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatedResultViewController.swift; sourceTree = "<group>"; };
+		63B9ACC228B2B494001379A7 /* ConvertedResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertedResultViewController.swift; sourceTree = "<group>"; };
 		63F4492B28AC1E570093565E /* HamiltonTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HamiltonTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F4492E28AC1E570093565E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63F4493028AC1E570093565E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				63B9ACC028B1891D001379A7 /* CalculatedResultViewController.swift */,
+				63B9ACC228B2B494001379A7 /* ConvertedResultViewController.swift */,
 				63F4492D28AC1E570093565E /* HamiltonTask */,
 				63F4494428AC1E5A0093565E /* HamiltonTaskTests */,
 				63F4494E28AC1E5A0093565E /* HamiltonTaskUITests */,
@@ -262,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63F4493328AC1E570093565E /* HomeViewController.swift in Sources */,
+				63B9ACC328B2B494001379A7 /* ConvertedResultViewController.swift in Sources */,
 				63F4492F28AC1E570093565E /* AppDelegate.swift in Sources */,
 				63F4493128AC1E570093565E /* SceneDelegate.swift in Sources */,
 				63B9ACC128B1891D001379A7 /* CalculatedResultViewController.swift in Sources */,

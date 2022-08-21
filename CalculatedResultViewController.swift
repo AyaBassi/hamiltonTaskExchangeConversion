@@ -11,14 +11,38 @@ class CalculatedResultViewController: UIViewController {
 
     var amount: String?
     var convertedAmount: String?
+    var conversionRate: Double?
     
     @IBOutlet weak var amountLabel: UILabel!
     
     @IBOutlet weak var convertedAmountLabel: UILabel!
+    
     @IBOutlet weak var timerLabel: UILabel!
     
     var countDownTimer : Timer?
     var secondsRemaining = 30
+    
+    @IBAction func convertAndTransferCurrency(_ sender: UIButton) {
+        
+        countDownTimer?.invalidate()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "goToConvertedResultScreen"{
+            
+            let destinationVC = segue.destination as! ConvertedResultViewController
+            
+            
+            if let convertedAmount = self.convertedAmount {
+                destinationVC.convertedAmount = convertedAmount
+            }
+            
+            if let conversionRate = conversionRate {
+                destinationVC.conversionRate = conversionRate
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
